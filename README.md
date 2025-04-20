@@ -16,7 +16,9 @@ Extensive experiments are conducted across three multi-modal RGBT semantic segme
 ## 👁️ SARTM model
 
 <div align="center"> 
+  
 ![SARTM](fig/SARTM.png)
+
 **Figure:** Overall architecture of SARTM model.
 
 </div>
