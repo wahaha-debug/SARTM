@@ -1,0 +1,51 @@
+DEVICE          : cuda              # device used for training and evaluation (cpu, cuda, cuda0, cuda1, ...)
+SAVE_DIR        : '../output'         # output folder name used for saving the model, logs and inference results
+
+MODEL:
+  NAME          : SAM                                            # name of the model you are using
+  BACKBONE      : b+         # model variant
+  PRETRAINED    : '../checkpoints/sam2_hiera_base_plus.pt'     # backbone model's weight
+  RESUME        : ''                                                # checkpoint file
+  MODEL_CONFIG  : './sam2_hiera_b+.yaml'                                                # checkpoint file
+
+DATASET:
+  NAME          : MFNet                                          # dataset name to be trained with (camvid, cityscapes, ade20k)
+  ROOT          : '../data/MFNet'                                   # dataset root path
+  IGNORE_LABEL  : 255
+  MODALS        : ['img', 'thermal']
+
+TRAIN:
+  IMAGE_SIZE    : [800, 800]      # training image size in (h, w)
+  BATCH_SIZE    : 8               # batch size used to train
+  EPOCHS        : 500             # number of epochs to train
+  EVAL_START    : 1              # evaluation interval during training
+  EVAL_INTERVAL : 1               # evaluation interval during training
+  AMP           : false           # use AMP in training
+  DDP           : false            # use DDP training
+  RANK          : 16
+
+LOSS:
+  NAME          : CrossEntropy     # loss function name (ohemce, ce, dice)
+  CLS_WEIGHTS   : false            # use class weights in loss calculation
+
+OPTIMIZER:
+  NAME          : adamw           # optimizer name
+  LR            : 0.0001        # initial learning rate used in optimizer
+  WEIGHT_DECAY  : 0.01            # decay rate used in optimizer
+
+SCHEDULER:
+  NAME          : warmuppolylr    # scheduler name
+  POWER         : 0.9             # scheduler power
+  WARMUP        : 10              # warmup epochs used in scheduler
+  WARMUP_RATIO  : 0.1             # warmup ratio
+
+EVAL:
+  MODEL_PATH    : ''
+  IMAGE_SIZE    : [1280, 1280]      # evaluation image size in (h, w)
+  BATCH_SIZE    : 1              # batch size used to train
+  IGNORE_LABEL  : 255
+  FILE: ''                          # filename or foldername
+  MSF: 
+    ENABLE      : false                                   # multi-scale and flip evaluation  
+    FLIP        : true                                    # use flip in evaluation
+    SCALES      : [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]       # scales used in MSF evaluation                
